@@ -28,3 +28,26 @@ class Solution {
         return dp[amount] == Integer.MAX_VALUE ? -1 : dp[amount];
     }
 }
+
+// Time Complexity: O(n), where n is the number of houses
+//   - We process each house once and do constant work per house
+// Space Complexity: O(1)
+//   - Only a fixed array of size 3 is used regardless of input size
+
+class Solution {
+    public int minCost(int[][] costs) {        
+        int[] dp = new int[3]; // dp[i] holds min cost if the last house is painted with color i
+        
+        for(int i=0; i<costs.length; i++){
+            // Calculate current costs based on previous row
+            int dp0 = costs[i][0] + Math.min(dp[1], dp[2]); // Paint red
+            int dp1 = costs[i][1] + Math.min(dp[0], dp[2]); // Paint blue 
+            int dp2 = costs[i][2] + Math.min(dp[0], dp[1]); // Paint green
+            
+            // Update dp with new costs
+            dp[0] = dp0; dp[1] = dp1; dp[2] = dp2;
+        }
+        // Return minimum of final choices
+        return Math.min(dp[0], Math.min(dp[1], dp[2]));   
+    }
+}
